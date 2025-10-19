@@ -1,4 +1,5 @@
 import random
+print("Welcome to rock,paper,scissors")
 options=["rock","paper","scissors"]
 
 player_score=0
