@@ -1,0 +1,14 @@
+[
+    {
+        "expense_name": "fees",
+        "cost": "20000",
+        "category": "\ud83c\udfeb Education",
+        "date": "10/22/2025"
+    },
+    {
+        "expense_name": "trip to south africa",
+        "cost": "80000",
+        "category": "\u2708 Travelling",
+        "date": "10/22/2025"
+    }
+]
