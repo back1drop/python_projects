@@ -1,0 +1,11 @@
+[
+    {
+        "username": "micah",
+        "pin": "65920ac566bb4019cf90ad52344b067ded0a912871c96033beab606a08956ada",
+        "salt": "abc3a584ab9d6e47",
+        "failed_attempts": 0,
+        "locked": false,
+        "security_question": "What's your favorite food?",
+        "security_answer": "9f7af323df7565c5ff995d2baa3f9cb9ee3832eae2938ee9e8bf535b0a3ed855"
+    }
+]
