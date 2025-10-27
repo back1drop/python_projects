@@ -1,0 +1,25 @@
+# Environment variables
+.env
+
+# Python cache and build files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+
+# VS Code settings
+.vscode/
+
+# Logs and temporary files
+*.log
+
+# Ignore specific Python files
+pokemon.py
+weather3.py

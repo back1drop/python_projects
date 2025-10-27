@@ -51,14 +51,13 @@ def passworder(password):
     if(re.search(r"[A-Z]",password)and re.search(r"[a-z]",password) and re.search(r"[^A-Za-z0-9]",password)):
         score+=1
     else:
-        feedback.append("Try mixing letters, numbers, and symbols.")
+        feedback_lis.append("Try mixing letters, numbers, and symbols.")
 
-    max_score=6
+    max_score=7
     if score < 0:
         score = 0
     strength_percentage = int((score / max_score) * 100)
 
-    # 8️⃣ Strength levels
     if strength_percentage <= 20:
         strength = "Very Weak"
         comment = "Too short or predictable. Avoid common patterns."
@@ -75,17 +74,14 @@ def passworder(password):
         strength = "Very Strong"
         comment = "Excellent! Very difficult to crack."
 
-
     print("\n--- PASSWORD ANALYSIS ---")
     print(f"Password strength: {strength}  ({strength_percentage}%)")
     print(f"\n{comment}")
     if feedback_lis:
         print("Suggestions to improve: \n")
         for item in feedback_lis:
-            print(f"- {item}\n")
+            print(f"- {item}")
 
-
-        
 
 password=input("Enter your password: ").strip()
 passworder(password)
