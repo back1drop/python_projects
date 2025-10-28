@@ -1,42 +1,5 @@
 import datetime
 current_year=datetime.datetime.now().year
-
-def Checker(year):
-    while True:
-        if not year.isdigit():
-            print("Year should be numerical ")
-            break 
-        elif int(year)>current_year and int(year)<1940:
-            print("Invalid year")
-            break
-        else:
-            return year
-       
-    
-def Monthy(month,day):
-    
-    if month not in['1','2','3','4','5','6','7','8','9','10','11','12']:
-        print("Invalid month")
-        return False
-    elif month in['1','3','5','7','8','10','12']:
-        days=31
-        if not month.isdigit():
-            print("Month should be numerical ")
-        elif int(day)>days or int(day)<0:
-            print("Invalid day")
-            return False
-        else:
-            return day,month
-       
-    elif month in['4','6','9','11']:
-        days=30
-        if not month.isdigit():
-            print("Month should be numerical ")
-        elif int(day)>days or int(day)<0:
-            print("Invalid day")
-            return False
-        else:
-            return day,month
         
 
 def calculator():
@@ -63,26 +26,23 @@ def calculator():
         date=input("Enter the date: ").strip()
     if month in['1','3','5','7','8','10','12']:
         days=31
-        while int(date)>days or int(date)<0:
+        while int(date)>days or int(date)<1:
             print("Invalid day")   
             date=input("Enter the date: ").strip()
     elif month in['4','6','9','11']:
         days=30
-        while int(date)>days or int(date)<0:
+        while int(date)>days or int(date)<1:
             print("Invalid day")   
             date=input("Enter the date: ").strip()
     elif month=='2':
-        diff=current_year-int(year)
-        dive=diff/2
-        mod=diff%2
-        if dive%2!=0 or mod!=0:
-            days=28
-            while int(date)>days or int(date)<0:
+        if (int(year) % 4 == 0 and int(year) % 100 != 0) or (int(year) % 400 == 0):
+            days=29
+            while int(date)>days or int(date)<1:
                 print("Invalid day")   
                 date=input("Enter the date: ").strip()
         else:
-            days=29
-            while int(date)>days or int(date)<0:
+            days=28
+            while int(date)>days or int(date)<1:
                 print("Invalid day")   
                 date=input("Enter the date: ").strip()
             
