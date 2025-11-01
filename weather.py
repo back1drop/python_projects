@@ -30,12 +30,10 @@ def get_weather(city):
         icon_id = data["weather"][0]["icon"]
         icon_url = f"http://openweathermap.org/img/wn/{icon_id}@2x.png"
 
-        # Fetch icon image
         icon_data = requests.get(icon_url).content
         icon_img = Image.open(BytesIO(icon_data))
         icon_photo = ImageTk.PhotoImage(icon_img)
 
-        # Update GUI elements
         weather_icon_label.config(image=icon_photo)
         weather_icon_label.image = icon_photo
 
@@ -55,7 +53,7 @@ def search_weather():
     else:
         get_weather(city)
 
-# ----------- GUI Section --------------
+# --------GUI Section -----------
 
 root = tk.Tk()
 root.title("Weather App")

@@ -1,12 +1,13 @@
 import sqlite3
-import customtkinter as ctk
+import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-# WITH GUI
+
+# ---------------- DATABASE ----------------
 def init_db():
-    connection=sqlite3.connect("shopping.db")
-    cursor=connection.cursor()
+    connection = sqlite3.connect("shopping.db")
+    cursor = connection.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS items(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,6 +20,8 @@ def init_db():
     connection.commit()
     connection.close()
 
+
+# ---------------- GUI FUNCTIONS ----------------
 def add_item():
     name = name_entry.get().lower().strip()
     quantity = quantity_entry.get().strip()
@@ -55,6 +58,7 @@ def add_item():
     finally:
         connection.close()
 
+
 def view_items():
     for row in tree.get_children():
         tree.delete(row)
@@ -67,7 +71,7 @@ def view_items():
 
     for item in items:
         item_total = item[2] * item[3]
-        tree.insert("", ctk.END, values=(item[0], item[1], item[2], item[3], item[4], item_total))
+        tree.insert("", tk.END, values=(item[0], item[1], item[2], item[3], item[4], item_total))
 
 
 def delete_item():
@@ -87,16 +91,18 @@ def delete_item():
     view_items()
     messagebox.showinfo("Deleted", "Item deleted successfully")
 
+
 def update_item():
-    selected=tree.selection()
+    selected = tree.selection()
     if not selected:
         messagebox.showerror("Error", "Select an item to update")
         return
-    item_id=tree.item(selected)["values"][0]
-    name=name_entry.get().lower().strip()
-    quantity=quantity_entry.get().strip()
-    price=price_entry.get().strip()
-    category=category_entry.get().strip().lower()
+
+    item_id = tree.item(selected)["values"][0]
+    name = name_entry.get().lower().strip()
+    quantity = quantity_entry.get().strip()
+    price = price_entry.get().strip()
+    category = category_entry.get().strip().lower()
 
     if name == "" or category == "":
         messagebox.showerror("Error", "Name and Category cannot be empty")
@@ -105,79 +111,65 @@ def update_item():
     if not quantity.isdigit() or int(quantity) <= 0:
         messagebox.showerror("Error", "Quantity must be a positive integer")
         return
-    
+
     try:
-        price=float(price)
-        if price<=0:
+        price = float(price)
+        if price <= 0:
             raise ValueError
     except:
         messagebox.showerror("Error", "Price must be a positive number")
         return
-    
-    connection=sqlite3.connect("shopping.db")
-    cursor=connection.cursor()
+
+    connection = sqlite3.connect("shopping.db")
+    cursor = connection.cursor()
     cursor.execute("""
     UPDATE items
     SET name=?, quantity=?, price=?, category=?
     WHERE id=?
-    """,(name,int(quantity),price,category,item_id))
+    """, (name, int(quantity), price, category, item_id))
+
     connection.commit()
     connection.close()
     view_items()
     messagebox.showinfo("Updated", "Item updated successfully")
-   
 
-#=====GUI=====
+
+# ---------------- GUI DESIGN ----------------
 init_db()
-
-# Enable modern mode
-ctk.set_appearance_mode("light")  
-ctk.set_default_color_theme("blue") 
-
-window = ctk.CTk()
+window = tk.Tk()
 window.title("Shopping List System")
-window.geometry("820x500")
+window.geometry("750x450")
 
-#  INPUT FRAME
-input_frame = ctk.CTkFrame(window, corner_radius=12)
-input_frame.pack(pady=15, padx=10, fill="x")
+# Input fields
+tk.Label(window, text="Name:").grid(row=0, column=0)
+name_entry = tk.Entry(window)
+name_entry.grid(row=0, column=1)
 
-ctk.CTkLabel(input_frame,text="Name:").grid(row=0,column=0,padx=5,pady=5)
-name_entry=ctk.CTkEntry(input_frame,width=180)
-name_entry.grid(row=0,column=1,padx=5,pady=5)
+tk.Label(window, text="Quantity:").grid(row=1, column=0)
+quantity_entry = tk.Entry(window)
+quantity_entry.grid(row=1, column=1)
 
-ctk.CTkLabel(input_frame,text="Quantity:").grid(row=1,column=0,padx=5,pady=5)
-quantity_entry=ctk.CTkEntry(input_frame,width=180)
-quantity_entry.grid(row=1,column=1,padx=5,pady=5)
+tk.Label(window, text="Price:").grid(row=2, column=0)
+price_entry = tk.Entry(window)
+price_entry.grid(row=2, column=1)
 
-ctk.CTkLabel(input_frame,text="Price:").grid(row=2,column=0,padx=5,pady=5)
-price_entry=ctk.CTkEntry(input_frame,width=180)
-price_entry.grid(row=2,column=1,padx=5,pady=5)
+tk.Label(window, text="Category:").grid(row=3, column=0)
+category_entry = tk.Entry(window)
+category_entry.grid(row=3, column=1)
 
-ctk.CTkLabel(input_frame,text="Category:").grid(row=3,column=0,padx=5,pady=5)
-category_entry=ctk.CTkEntry(input_frame,width=180)
-category_entry.grid(row=3,column=1,padx=5,pady=5)
+# Buttons
+tk.Button(window, text="Add Item", command=add_item).grid(row=4, column=0, pady=10)
+tk.Button(window, text="Update Item", command=update_item).grid(row=4, column=1)
+tk.Button(window, text="Delete Item", command=delete_item).grid(row=4, column=2)
 
-#BUTTONS 
-button_frame = ctk.CTkFrame(window, corner_radius=12)
-button_frame.pack(pady=10)
-
-ctk.CTkButton(button_frame,text="Add Item",width=120,command=add_item).grid(row=0,column=0,padx=10)
-ctk.CTkButton(button_frame,text="Update Item",width=120,command=update_item).grid(row=0,column=1,padx=10)
-ctk.CTkButton(button_frame,text="Delete Item",width=120,command=delete_item).grid(row=0,column=2,padx=10)
-
-#TABLE
-columns=("ID", "Name", "Qty", "Price", "Category", "Total")
-
-tree = ttk.Treeview(window,columns=columns,show="headings")
+# Table (Treeview)
+columns = ("ID", "Name", "Qty", "Price", "Category", "Total")
+tree = ttk.Treeview(window, columns=columns, show="headings")
 for col in columns:
-    tree.heading(col,text=col)
-tree.pack(fill="both", expand=True, padx=10, pady=10)
+    tree.heading(col, text=col)
+tree.grid(row=5, column=0, columnspan=5, sticky="nsew")
 
-# Make rows higher + prettier
-style = ttk.Style()
-style.configure("Treeview", rowheight=32, font=("Segoe UI", 11))
-style.configure("Treeview.Heading", font=("Segoe UI", 12, "bold"))
+# Load data on startup
+view_items()
 
-view_items()  
 window.mainloop()
